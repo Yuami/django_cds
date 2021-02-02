@@ -1,3 +1,9 @@
 from django.shortcuts import render
+from django.views import generic
 
-# Create your views here.
+from cds.models import Band
+
+
+class BandIndexView(generic.ListView):
+    template_name = 'cds/cds_list.html'
+    model = Band
