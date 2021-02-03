@@ -1,7 +1,0 @@
-<h1>Bands</h1>
-
-<ul>
-    {% for band in bands %}
-    <li><a href="{% url 'cds:detail' band.id %}">{{ band.name }}</a></li>
-    {% endfor %}
-</ul>

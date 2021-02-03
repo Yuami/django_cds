@@ -1,3 +1,5 @@
 from django.contrib import admin
 
-# Register your models here.
+from cds.models import Band
+
+admin.site.register(Band)

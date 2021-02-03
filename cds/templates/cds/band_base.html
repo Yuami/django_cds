@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Band</title>
+</head>
+<body>
+{% block header %}
+    <header>
+        <a href="{% url 'cds:list' %}">Back to list</a>
+    </header>
+{% endblock %}
+<main>
+    {% block content %}{% endblock %}
+</main>
+</body>
+</html>
