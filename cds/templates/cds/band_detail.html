@@ -17,6 +17,33 @@
         </tr>
     </table>
 
-    <a class="button" href="{% url 'cds:band-update' band.id %}">Update</a>
-    <a class="button has-background-danger" href="{% url 'cds:band-delete' band.id %}">Delete</a>
+    <h1 class="text">CDs</h1>
+    <table class="table">
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Total songs</th>
+            <th>Published at</th>
+            <th>Actions</th>
+        </tr>
+        {% for cd in band.cd_set.all %}
+            <tr>
+                <td>{{ cd.id }}</td>
+                <td>{{ cd.title }}</td>
+                <td>{{ cd.total_songs }}</td>
+                <td>{{ cd.pub_date }}</td>
+                <td>
+                    <a href="{% url 'cds:cd-update' cd.id %}">Update</a>
+                    <a href="{% url 'cds:cd-delete' cd.id %}">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <div class="mb-3">
+        <a class="button" href="{% url 'cds:cd-create' band.id %}">Create CD</a>
+    </div>
+    <div>
+        <a class="button" href="{% url 'cds:band-update' band.id %}">Update</a>
+        <a class="button has-background-danger" href="{% url 'cds:band-delete' band.id %}">Delete</a>
+    </div>
 {% endblock %}

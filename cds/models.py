@@ -10,8 +10,8 @@ class Band(models.Model):
         return self.name
 
 
-class CD(models.Model):
-    band_id = models.ForeignKey(Band, on_delete=models.CASCADE)
+class Cd(models.Model):
+    band_id = models.ForeignKey(Band, on_delete=models.CASCADE, verbose_name='Band')
     title = models.CharField(max_length=50)
     pub_date = models.DateTimeField(verbose_name='Publication date')
     total_songs = models.IntegerField(verbose_name='Total songs')

@@ -1,0 +1,10 @@
+{% extends "cds/band_base.html" %}
+{% block content %}
+    <h1 class="title">Deleting {% block title %}{% endblock %}</h1>
+    <p>Are you sure you want to delete "{% block name %}{% endblock %}"</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <input class="button has-background-danger" type="submit" value="Delete">
+    </form>
+{% endblock %}
