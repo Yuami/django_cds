@@ -1,8 +1,8 @@
 {% extends "cds/band_base.html" %}
 {% block content %}
-    <h1>{{ band.name }}</h1>
+    <h1 class="title">{{ band.name }}</h1>
 
-    <table>
+    <table class="table">
         <tr>
             <th>Id</th>
             <th>Name</th>
@@ -17,6 +17,6 @@
         </tr>
     </table>
 
-    <a href="{% url 'cds:update' band.id %}">Update</a>
-    <a href="{% url 'cds:delete' band.id %}">Delete</a>
+    <a class="button" href="{% url 'cds:band-update' band.id %}">Update</a>
+    <a class="button has-background-danger" href="{% url 'cds:band-delete' band.id %}">Delete</a>
 {% endblock %}

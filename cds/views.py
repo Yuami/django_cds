@@ -17,7 +17,7 @@ class BandCreateView(generic.CreateView):
     fields = ['name']
 
     def get_success_url(self, *args):
-        return reverse('cds:detail', kwargs={'pk': self.object.pk})
+        return reverse('cds:band-detail', kwargs={'pk': self.object.pk})
 
 
 class BandUpdateView(generic.UpdateView):
@@ -26,7 +26,7 @@ class BandUpdateView(generic.UpdateView):
     form_class = BandUpdateForm
 
     def get_success_url(self, *args):
-        return reverse('cds:detail', args=[self.get_object().id])
+        return reverse('cds:band-detail', args=[self.get_object().id])
 
 
 class BandDetailView(generic.DetailView):
@@ -37,4 +37,4 @@ class BandDetailView(generic.DetailView):
 class BandDeleteView(generic.DeleteView):
     template_name = 'cds/band_delete.html'
     model = Band
-    success_url = reverse_lazy('cds:list')
+    success_url = reverse_lazy('cds:band-list')
