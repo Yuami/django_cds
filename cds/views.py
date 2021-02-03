@@ -1,7 +1,7 @@
 from django.urls import reverse, reverse_lazy
 from django.views import generic
 
-from cds.forms import BandUpdateForm, CdCreateFrom
+from cds.forms import BandUpdateForm, CdForm
 from cds.models import Band, Cd
 
 
@@ -41,9 +41,12 @@ class BandDeleteView(generic.DeleteView):
 
 
 class CdUpdateView(generic.UpdateView):
-    template_name = 'cds/band_delete.html'
+    template_name = 'cds/cd_update.html'
     model = Cd
-    success_url = reverse_lazy('cds:band-list')
+    form_class = CdForm
+
+    def get_success_url(self, *args):
+        return reverse('cds:band-detail', kwargs={'pk': self.object.band_id.id})
 
 
 class CdDeleteView(generic.DeleteView):
@@ -55,7 +58,7 @@ class CdDeleteView(generic.DeleteView):
 class CdCreateView(generic.CreateView):
     template_name = 'cds/cd_create.html'
     model = Cd
-    form_class = CdCreateFrom
+    form_class = CdForm
 
     def get_success_url(self, *args):
-        return reverse('cds:band-detail', kwargs={'pk': self.object.band_id})
+        return reverse('cds:band-detail', kwargs={'pk': self.object.band_id.id})
