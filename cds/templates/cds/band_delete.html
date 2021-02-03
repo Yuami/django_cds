@@ -1,10 +1,10 @@
 {% extends "cds/band_base.html" %}
 {% block content %}
-    <h1>Deleting {{ band.name }}</h1>
+    <h1 class="title">Deleting {{ band.name }}</h1>
     <p>Are you sure you want to delete "{{ band.name }}"</p>
 
     <form method="post">
         {% csrf_token %}
-        <input type="submit" value="Delete">
+        <input class="button has-background-danger" type="submit" value="Delete">
     </form>
 {% endblock %}
