@@ -1,15 +1,11 @@
 {% extends "cds/base.html" %}
+{% load django_tables2 %}
 
 {% block header %}
 {% endblock %}
 
 {% block content %}
     <h1 class="title mb-3">Bands</h1>
-
-    <ul class="mb-3">
-        {% for band in bands %}
-            <li><a href="{% url 'cds:band-detail' band.id %}">{{ band.name }}</a></li>
-        {% endfor %}
-    </ul>
+    {% render_table table %}
     <a class="button has-background-primary" href="{% url 'cds:band-create' %}">Create band</a>
 {% endblock %}

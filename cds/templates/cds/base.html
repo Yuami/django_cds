@@ -8,9 +8,10 @@
 <body class="container">
 {% block header %}
     <header class="mb-3">
-        <a href="{% url 'cds:band-list' %}">Back to list</a>
+        <a href="{% url 'cds:band-list' %}">Back to band list</a>
     </header>
 {% endblock %}
+
 <main>
     {% block content %}{% endblock %}
 </main>

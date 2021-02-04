@@ -1,14 +1,16 @@
 from django.urls import reverse, reverse_lazy
 from django.views import generic
+from django_tables2 import SingleTableView
 
 from cds.forms import BandUpdateForm, CdForm, SongForm
 from cds.models import Band, Cd, Song
+from cds.tables import BandTable
 
 
-class BandIndexView(generic.ListView):
-    template_name = 'cds/band_list.html'
+class BandIndexView(SingleTableView):
     model = Band
-    context_object_name = 'bands'
+    table_class = BandTable
+    template_name = 'cds/band_list.html'
 
 
 class BandCreateView(generic.CreateView):
@@ -46,13 +48,15 @@ class CdUpdateView(generic.UpdateView):
     form_class = CdForm
 
     def get_success_url(self, *args):
-        return reverse('cds:band-detail', kwargs={'pk': self.object.band_id.id})
+        return reverse('cds:band-detail', kwargs={'pk': self.object.band.pk})
 
 
 class CdDeleteView(generic.DeleteView):
     template_name = 'cds/cd_delete.html'
     model = Cd
-    success_url = reverse_lazy('cds:band-list')
+
+    def get_success_url(self):
+        return reverse('cds:band-detail', kwargs={'pk': self.object.band.pk})
 
 
 class CdCreateView(generic.CreateView):
@@ -61,7 +65,7 @@ class CdCreateView(generic.CreateView):
     form_class = CdForm
 
     def get_success_url(self, *args):
-        return reverse('cds:band-detail', kwargs={'pk': self.object.band_id.id})
+        return reverse('cds:band-detail', kwargs={'pk': self.object.band.pk})
 
 
 class CdDetailView(generic.DetailView):
@@ -75,13 +79,19 @@ class SongUpdateView(generic.UpdateView):
     form_class = SongForm
 
     def get_success_url(self, *args):
-        return reverse('cds:cd-detail', kwargs={'pk': self.object.cd_id.id})
+        return reverse('cds:cd-detail', kwargs={'pk': self.object.cd.id})
 
 
 class SongDeleteView(generic.DeleteView):
     template_name = 'cds/song_delete.html'
     model = Song
-    success_url = reverse_lazy('cds:band-list')
+
+    def get_success_url(self):
+        return reverse('cds:cd-detail', kwargs={'pk': self.object.cd.pk})
+
+    def delete(self, request, *args, **kwargs):
+        self.get_object().cd.remove_song()
+        return super().delete(request, *args, **kwargs)
 
 
 class SongCreateView(generic.CreateView):
@@ -90,7 +100,11 @@ class SongCreateView(generic.CreateView):
     form_class = SongForm
 
     def get_success_url(self, *args):
-        return reverse('cds:cd-detail', kwargs={'pk': self.object.cd_id.id})
+        return reverse('cds:cd-detail', kwargs={'pk': self.object.cd.id})
+
+    def form_valid(self, form):
+        self.get_object().cd.add_song()
+        return super().form_valid(form)
 
 
 class SongDetailView(generic.DetailView):

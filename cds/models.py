@@ -1,4 +1,5 @@
 from django.db import models
+from django.dispatch import receiver
 
 
 class Band(models.Model):
@@ -11,17 +12,25 @@ class Band(models.Model):
 
 
 class Cd(models.Model):
-    band_id = models.ForeignKey(Band, on_delete=models.CASCADE, verbose_name='Band')
+    band = models.ForeignKey(Band, on_delete=models.CASCADE, verbose_name='Band')
     title = models.CharField(max_length=50)
     pub_date = models.DateTimeField(verbose_name='Publication date')
-    total_songs = models.IntegerField(verbose_name='Total songs')
+    total_songs = models.IntegerField(verbose_name='Total songs', default=0)
+
+    def add_song(self):
+        self.total_songs += self.total_songs + 1
+        self.save()
+
+    def remove_song(self):
+        self.total_songs -= max(self.total_songs - 1, 0)
+        self.save()
 
     def __str__(self):
         return self.title
 
 
 class Song(models.Model):
-    cd_id = models.ForeignKey(Cd, on_delete=models.CASCADE, verbose_name='CD')
+    cd = models.ForeignKey(Cd, on_delete=models.CASCADE, verbose_name='CD')
     title = models.CharField(max_length=50)
     duration = models.IntegerField()
     order = models.IntegerField()
