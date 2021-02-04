@@ -62,3 +62,8 @@ class CdCreateView(generic.CreateView):
 
     def get_success_url(self, *args):
         return reverse('cds:band-detail', kwargs={'pk': self.object.band_id.id})
+
+
+class CdDetailView(generic.DetailView):
+    template_name = 'cds/cd_detail.html'
+    model = Cd

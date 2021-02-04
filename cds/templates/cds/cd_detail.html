@@ -1,50 +1,49 @@
 {% extends "cds/base.html" %}
 {% block content %}
-    <h1 class="title">{{ band.name }}</h1>
+    <h1 class="title">{{ cd.title }}</h1>
     <table class="table">
         <tr>
             <th>Id</th>
-            <td>{{ band.id }}</td>
+            <td>{{ cd.id }}</td>
         </tr>
         <tr>
-            <th>Name</th>
-            <td>{{ band.name }}</td>
+            <th>Title</th>
+            <td>{{ cd.title }}</td>
         </tr>
         <tr>
-            <th>Created at</th>
-            <td>{{ band.creation_date }}</td>
+            <th>Total songs</th>
+            <td>{{ cd.total_songs }}</td>
         </tr>
         <tr>
-            <th>Active</th>
-            <td>{{ band.active }}</td>
+            <th>Publication date</th>
+            <td>{{ cd.pub_date }}</td>
         </tr>
         <tr>
             <th>Actions</th>
             <td>
-                <a class="button" href="{% url 'cds:band-update' band.id %}">Update</a>
-                <a class="button has-background-danger" href="{% url 'cds:band-delete' band.id %}">Delete</a>
+                <a class="button" href="{% url 'cds:cd-update' cd.id %}">Update</a>
+                <a class="button has-background-danger" href="{% url 'cds:cd-delete' cd.id %}">Delete</a>
             </td>
         </tr>
     </table>
 
     <div class="mt-3">
-        <h1 class="title">CDs</h1>
+        <h1 class="title">Songs</h1>
         <table class="table is-striped is-hoverable is-fullwidth">
             <tr>
                 <th>Id</th>
                 <th>Title</th>
-                <th>Total songs</th>
-                <th>Published at</th>
+                <th>Duration</th>
                 <th>Actions</th>
             </tr>
-            {% for cd in band.cd_set.all %}
+            {% for song in cd.song_set.all %}
                 <tr>
-                    <td>{{ cd.id }}</td>
-                    <td>{{ cd.title }}</td>
-                    <td>{{ cd.total_songs }}</td>
-                    <td>{{ cd.pub_date }}</td>
+                    <td>{{ song.id }}</td>
+                    <td>{{ song.title }}</td>
+                    <td>{{ song.duration }}</td>
                     <td class="is-flex">
-                        <a href="{% url 'cds:cd-detail' cd.id %}" class="has-text-black mx-2">
+                        {# Detail #}
+                        <a href="" class="has-text-black mx-2">
                             <svg style="height: 20px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                  stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -53,14 +52,16 @@
                                       d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                             </svg>
                         </a>
-                        <a href="{% url 'cds:cd-update' cd.id %}" class="has-text-black mx-2">
+                        {# Update #}
+                        <a href="" class="has-text-black mx-2">
                             <svg style="height: 20px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                  stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                       d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                             </svg>
                         </a>
-                        <a href="{% url 'cds:cd-delete' cd.id %}" class="has-text-black mx-2">
+                        {# Delete #}
+                        <a href="" class="has-text-black mx-2">
                             <svg style="height: 20px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                  stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -72,7 +73,7 @@
             {% endfor %}
         </table>
         <div class="mb-3">
-            <a class="button" href="{% url 'cds:cd-create' band.id %}">Create CD</a>
+            <a class="button" href="{% url 'cds:cd-create' cd.id %}">Create Song</a>
         </div>
     </div>
 {% endblock %}
