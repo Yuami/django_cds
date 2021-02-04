@@ -1,0 +1,29 @@
+{% extends "cds/base.html" %}
+{% block content %}
+    <h1 class="title">{{ song.title }}</h1>
+    <table class="table">
+        <tr>
+            <th>Id</th>
+            <td>{{ song.id }}</td>
+        </tr>
+        <tr>
+            <th>Title</th>
+            <td>{{ song.title }}</td>
+        </tr>
+        <tr>
+            <th>Duration</th>
+            <td>{{ song.duration }}</td>
+        </tr>
+        <tr>
+            <th>Order</th>
+            <td>{{ song.order }}</td>
+        </tr>
+        <tr>
+            <th>Actions</th>
+            <td>
+                <a class="button" href="{% url 'cds:song-update' song.id %}">Update</a>
+                <a class="button has-background-danger" href="{% url 'cds:song-delete' song.id %}">Delete</a>
+            </td>
+        </tr>
+    </table>
+{% endblock %}

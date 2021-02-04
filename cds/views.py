@@ -1,8 +1,8 @@
 from django.urls import reverse, reverse_lazy
 from django.views import generic
 
-from cds.forms import BandUpdateForm, CdForm
-from cds.models import Band, Cd
+from cds.forms import BandUpdateForm, CdForm, SongForm
+from cds.models import Band, Cd, Song
 
 
 class BandIndexView(generic.ListView):
@@ -67,3 +67,32 @@ class CdCreateView(generic.CreateView):
 class CdDetailView(generic.DetailView):
     template_name = 'cds/cd_detail.html'
     model = Cd
+
+
+class SongUpdateView(generic.UpdateView):
+    template_name = 'cds/song_update.html'
+    model = Song
+    form_class = SongForm
+
+    def get_success_url(self, *args):
+        return reverse('cds:cd-detail', kwargs={'pk': self.object.cd_id.id})
+
+
+class SongDeleteView(generic.DeleteView):
+    template_name = 'cds/song_delete.html'
+    model = Song
+    success_url = reverse_lazy('cds:band-list')
+
+
+class SongCreateView(generic.CreateView):
+    template_name = 'cds/song_create.html'
+    model = Song
+    form_class = SongForm
+
+    def get_success_url(self, *args):
+        return reverse('cds:cd-detail', kwargs={'pk': self.object.cd_id.id})
+
+
+class SongDetailView(generic.DetailView):
+    template_name = 'cds/song_detail.html'
+    model = Song

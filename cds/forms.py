@@ -1,6 +1,6 @@
 from django import forms
 
-from cds.models import Band, Cd
+from cds.models import Band, Cd, Song
 
 
 class CdForm(forms.ModelForm):
@@ -11,6 +11,12 @@ class CdForm(forms.ModelForm):
             'pub_date': forms.DateTimeInput(
                 attrs={'type': 'datetime-local', 'class': 'myDateClass', 'placeholder': 'Select a date'})
         }
+
+
+class SongForm(forms.ModelForm):
+    class Meta:
+        model = Song
+        fields = ('title', 'duration', 'order', 'cd_id')
 
 
 class BandUpdateForm(forms.ModelForm):
