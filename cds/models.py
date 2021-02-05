@@ -1,5 +1,4 @@
 from django.db import models
-from django.dispatch import receiver
 
 
 class Band(models.Model):

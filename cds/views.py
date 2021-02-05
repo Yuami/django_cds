@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect
+from django.db.models import Sum
 from django.urls import reverse, reverse_lazy
 from django.views import generic
 from django_tables2 import SingleTableView
@@ -12,6 +12,16 @@ class BandIndexView(SingleTableView):
     model = Band
     table_class = BandTable
     template_name = 'cds/band/band_list.html'
+
+    def get_queryset(self):
+        return Band.objects.all().annotate(total_songs=Sum('cd__total_songs'))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['detail'] = 'band-detail'
+        context['update'] = 'band-update'
+        context['delete'] = 'band-delete'
+        return context
 
 
 class BandCreateView(generic.CreateView):
@@ -91,8 +101,10 @@ class SongDeleteView(generic.DeleteView):
         return reverse('cds:cd-detail', kwargs={'pk': self.object.cd.pk})
 
     def delete(self, request, *args, **kwargs):
-        self.get_object().cd.remove_song()
-        return super().delete(request, *args, **kwargs)
+        cd = self.get_object().cd
+        response = super().delete(request, *args, **kwargs)
+        cd.remove_song()
+        return response
 
 
 class SongCreateView(generic.CreateView):
