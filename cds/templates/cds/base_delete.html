@@ -1,7 +1,7 @@
 {% extends "cds/base.html" %}
 {% block content %}
-    <h1 class="title">Deleting {% block title %}{% endblock %}</h1>
-    <p>Are you sure you want to delete "{% block name %}{% endblock %}"</p>
+    <h1 class="title">Deleting {{ title }}</h1>
+    <p>Are you sure you want to delete "{{ name }}"</p>
 
     <form method="post">
         {% csrf_token %}

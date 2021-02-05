@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Band</title>
+    <title>{{ title }}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma-rtl.min.css">
 </head>
 <body class="container">
 {% block header %}
     <header class="mb-3">
-        <a href="{% url 'cds:band-list' %}">Back to band list</a>
+        <a href="{{ referer }}">Back</a>
     </header>
 {% endblock %}
 

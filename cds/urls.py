@@ -1,6 +1,6 @@
 from django.urls import path
 
-from . import views
+from cds.views import views
 
 app_name = 'cds'
 urlpatterns = [
