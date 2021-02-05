@@ -18,7 +18,7 @@ class Cd(models.Model):
     total_songs = models.IntegerField(verbose_name='Total songs', default=0)
 
     def add_song(self):
-        self.total_songs += self.total_songs + 1
+        self.total_songs += 1
         self.save()
 
     def remove_song(self):
