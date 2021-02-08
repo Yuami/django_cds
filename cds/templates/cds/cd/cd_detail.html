@@ -75,7 +75,7 @@
             {% endfor %}
         </table>
         <div class="mb-3">
-            <a class="button" href="{% url 'cds:song-create' %}">Create Song</a>
+            <a class="button" href="{% url 'cds:song-create' %}?ref=True&fk=cd&pk={{ cd.pk }}">Create Song</a>
         </div>
     </div>
 {% endblock %}

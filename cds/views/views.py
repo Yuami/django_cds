@@ -115,7 +115,7 @@ class SongCreateView(CreateView):
     title = 'Song'
 
     def get_backlink(self):
-        return reverse('cds:cd-detail', kwargs={'pk': self.object.cd.pk})
+        return reverse('cds:cd-detail', kwargs={'pk': self.request.GET['pk']})
 
     def get_success_url(self, *args):
         return reverse('cds:song-detail', kwargs={'pk': self.object.pk})
