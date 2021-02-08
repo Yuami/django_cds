@@ -63,8 +63,12 @@ class BandDeleteView(DeleteView):
 
 class CdCreateView(CreateView):
     model = Cd
-    form_class = CdForm
     title = 'CD'
+
+    def get_form(self):
+        has_ref = self.request.GET['ref'] == 'True'
+        pk = self.request.GET['pk']
+        return CdForm(initial={'band': Band.objects.get(pk=pk) if has_ref else None})
 
     def get_success_url(self, *args):
         return reverse('cds:cd-detail', kwargs={'pk': self.object.pk})

@@ -37,7 +37,7 @@ class CreateView(BaseView, generic.CreateView):
         if self.request.GET['ref'] == 'True':
             fk = self.request.GET['fk']
             pk = self.request.GET['pk']
-            fk_object = getattr(self.object, fk)._meta.model.objects.get(pk=pk)
+            fk_object = getattr(self.get_object(), fk)._meta.model.objects.get(pk=pk)
             setattr(self.object, fk, fk_object)
             self.object.save()
         return response
