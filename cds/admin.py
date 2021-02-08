@@ -15,6 +15,7 @@ class SongInline(admin.TabularInline):
 class BandAdmin(admin.ModelAdmin):
     search_fields = ['name']
     inlines = [CdInline]
+    list_display = ('name', 'active')
 
 
 @admin.register(Cd)
@@ -22,9 +23,12 @@ class CdAdmin(admin.ModelAdmin):
     search_fields = ['title']
     autocomplete_fields = ['band']
     inlines = [SongInline]
+    list_display = ('title', 'pub_date', 'total_songs', 'band')
 
 
 @admin.register(Song)
 class SongAdmin(admin.ModelAdmin):
     search_fields = ['title']
     autocomplete_fields = ['cd']
+    list_display = ('title', 'duration', 'cd')
+    ordering = ['cd', 'order']
