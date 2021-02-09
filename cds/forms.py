@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import inlineformset_factory
 
 from cds.models import Band, Cd, Song
 
@@ -31,3 +32,6 @@ class BandUpdateForm(forms.ModelForm):
     class Meta:
         model = Band
         fields = ('name', 'active')
+
+
+SongInlineFormset = inlineformset_factory(Cd, Song, form=SongForm, extra=2, can_delete=True)

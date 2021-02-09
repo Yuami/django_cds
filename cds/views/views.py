@@ -1,8 +1,9 @@
+from django.db import transaction
 from django.db.models import Sum
 from django.urls import reverse, reverse_lazy
 from django_tables2 import SingleTableView
 
-from cds.forms import BandUpdateForm, CdForm, SongForm
+from cds.forms import BandUpdateForm, CdForm, SongForm, SongInlineFormset
 from cds.models import Band, Cd, Song
 from cds.tables import BandTable
 from cds.views.crud import CreateView, UpdateView, DeleteView, DetailView
@@ -172,3 +173,16 @@ class SongDeleteView(DeleteView):
         response = super().delete(request, *args, **kwargs)
         cd.remove_song()
         return response
+
+
+class CdSongInlineView(UpdateView):
+    model = Cd
+    title = 'CD songs'
+    template_name = 'cds/cd/cd_song_inline.html'
+    form_class = SongInlineFormset
+
+    def get_backlink(self):
+        return reverse('cds:cd-detail', kwargs={'pk': self.object.pk})
+
+    def get_success_url(self):
+        return self.request.path_info

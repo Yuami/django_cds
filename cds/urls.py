@@ -12,6 +12,7 @@ urlpatterns = [
 
     path('cd/create', views.CdCreateView.as_view(), name='cd-create'),
     path('cd/<int:pk>', views.CdDetailView.as_view(), name='cd-detail'),
+    path('cd/<int:pk>/songs', views.CdSongInlineView.as_view(), name='cd-songs'),
     path('cd/<int:pk>/update', views.CdUpdateView.as_view(), name='cd-update'),
     path('cd/<int:pk>/delete', views.CdDeleteView.as_view(), name='cd-delete'),
 

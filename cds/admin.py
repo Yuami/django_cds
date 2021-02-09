@@ -5,10 +5,12 @@ from cds.models import Band, Cd, Song
 
 class CdInline(admin.TabularInline):
     model = Cd
+    extra = 2
 
 
 class SongInline(admin.TabularInline):
     model = Song
+    extra = 2
 
 
 @admin.register(Band)

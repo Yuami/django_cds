@@ -1,10 +1,7 @@
 {% extends "cds/base.html" %}
 {% block content %}
-    <h1 class="title">Editing {{ title }}</h1>
-
-    {% if error_message %}
-        <p>{{ error_message }}</p>
-    {% endif %}
+    <h1 class="title">Updating {{ title }}</h1>
+    {% block form_title %}{% endblock %}
     <form method="post">
         {% csrf_token %}
         <table class="table">

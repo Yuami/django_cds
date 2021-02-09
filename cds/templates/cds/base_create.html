@@ -1,6 +1,6 @@
 {% extends "cds/base.html" %}
 {% block content %}
-        <h1 class="title">{{ title }}</h1>
+        <h1 class="title">Creating {{ title }}</h1>
         {% block form_title %}{% endblock %}
         <form method="post" id="create-form">
             {% csrf_token %}
