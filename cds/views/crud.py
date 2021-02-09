@@ -25,22 +25,12 @@ class DetailView(BaseView, generic.DetailView):
         return self.attach_to_context(context, self.request)
 
 
-class CreateView(BaseView, generic.CreateView):
+class CreateView(generic.CreateView, BaseView):
     template_name = 'cds/base_create.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return self.attach_to_context(context, self.request)
-
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        if self.request.GET['ref'] == 'True':
-            fk = self.request.GET['fk']
-            pk = self.request.GET['pk']
-            fk_object = getattr(self.get_object(), fk)._meta.model.objects.get(pk=pk)
-            setattr(self.object, fk, fk_object)
-            self.object.save()
-        return response
 
 
 class UpdateView(BaseView, generic.UpdateView):

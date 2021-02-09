@@ -4,12 +4,17 @@ from cds.models import Band, Cd, Song
 
 
 class CdForm(forms.ModelForm):
+
+    def clean(self):
+        clean = super().clean()
+        return clean
+
     class Meta:
         model = Cd
         fields = ('band', 'title', 'pub_date')
         widgets = {
             'pub_date': forms.DateTimeInput(attrs={'type': 'datetime-local', 'placeholder': 'Select a date'}),
-            'band': forms.Select(attrs={'disabled': True})
+            'band': forms.Select(attrs={'hidden': True})
         }
 
 
