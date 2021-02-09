@@ -2,11 +2,11 @@
 {% block content %}
         <h1 class="title">{{ title }}</h1>
         {% block form_title %}{% endblock %}
-        <form method="post">
+        <form method="post" id="create-form">
             {% csrf_token %}
             <table class="table">
                 {{ form.as_table }}
             </table>
-            <input class="button has-background-primary" type="submit" value="Create">
+            <input class="button has-background-primary" id="create-submit" type="submit" value="Create">
         </form>
 {% endblock %}

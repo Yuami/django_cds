@@ -1,4 +1,14 @@
 {% extends "cds/base_create.html" %}
-{% block form_title %}
-<p class="text">Band "{{ band.name }}"</p>
+{% block scripts %}
+    <script>
+        const submit = document.querySelector('#create-submit')
+        const band = document.querySelector('#band-select')
+        const form = document.querySelector('#create-form')
+
+        submit.addEventListener('click', (e) => {
+            e.preventDefault()
+            band.removeAttribute('disabled')
+            form.submit()
+        })
+    </script>
 {% endblock %}

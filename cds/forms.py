@@ -14,7 +14,7 @@ class CdForm(forms.ModelForm):
         fields = ('band', 'title', 'pub_date')
         widgets = {
             'pub_date': forms.DateTimeInput(attrs={'type': 'datetime-local', 'placeholder': 'Select a date'}),
-            'band': forms.Select(attrs={'hidden': True})
+            'band': forms.Select(attrs={'disabled': True, 'id': 'band-select'})
         }
 
 
