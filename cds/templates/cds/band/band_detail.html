@@ -36,6 +36,7 @@
                 <th>Title</th>
                 <th>Total songs</th>
                 <th>Published at</th>
+                <th>Create</th>
                 <th>Actions</th>
             </tr>
             {% for cd in band.cd_set.all %}
@@ -44,6 +45,9 @@
                     <td>{{ cd.title }}</td>
                     <td>{{ cd.total_songs }}</td>
                     <td>{{ cd.pub_date }}</td>
+                    <td>
+                        <a class="button" href="{% url 'cds:song-create' %}?ref=True&fk=cd&pk={{ cd.pk }}">Create Song</a>
+                    </td>
                     <td class="is-flex">
                         <a href="{% url 'cds:cd-detail' cd.id %}" class="has-text-black mx-2">
                             <svg style="height: 20px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"

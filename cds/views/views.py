@@ -69,15 +69,12 @@ class CdCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        pk = self.request.GET['pk']
-        context['band'] = Band.objects.get(pk=pk)
+        context['band'] = Band.objects.get(pk=self.request.GET['pk'])
         return context
 
     def get_initial(self):
         initial = super().get_initial()
-        has_ref = self.request.GET['ref'] == 'True'
-        pk = self.request.GET['pk']
-        initial['band'] = Band.objects.get(pk=pk) if has_ref else None
+        initial['band'] = Band.objects.get(pk=self.request.GET['pk'])
         return initial
 
     def get_success_url(self, *args):
@@ -130,10 +127,10 @@ class SongCreateView(CreateView):
     def get_success_url(self, *args):
         return reverse('cds:song-detail', kwargs={'pk': self.object.pk})
 
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        self.object.cd.add_song()
-        return response
+    def get_initial(self):
+        initial = super().get_initial()
+        initial['cd'] = Cd.objects.get(pk=self.request.GET['pk'])
+        return initial
 
 
 class SongDetailView(DetailView):

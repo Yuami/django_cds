@@ -21,7 +21,7 @@ class Cd(models.Model):
         self.save()
 
     def remove_song(self):
-        self.total_songs -= max(self.total_songs - 1, 0)
+        self.total_songs = max(self.total_songs - 1, 0)
         self.save()
 
     def __str__(self):

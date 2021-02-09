@@ -22,6 +22,9 @@ class SongForm(forms.ModelForm):
     class Meta:
         model = Song
         fields = ('title', 'duration', 'order', 'cd')
+        widgets = {
+            'cd': forms.HiddenInput()
+        }
 
 
 class BandUpdateForm(forms.ModelForm):
