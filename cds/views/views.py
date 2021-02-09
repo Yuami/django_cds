@@ -136,6 +136,7 @@ class SongCreateView(CreateView):
 class SongDetailView(DetailView):
     template_name = 'cds/song/song_detail.html'
     model = Song
+    title = 'Song'
 
     def get_backlink(self):
         return reverse('cds:cd-detail', kwargs={'pk': self.object.cd.pk})
