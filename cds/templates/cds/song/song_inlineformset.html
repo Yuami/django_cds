@@ -2,7 +2,7 @@
     <h1 class="title">Songs</h1>
     <form method="post">
         {% csrf_token %}
-        <table class="table is-striped is-hoverable is-fullwidth">
+        <table class="table is-striped is-hoverable is-fullwidth" id="songs-table">
             {{ songs.management_form }}
             {% for form in songs.forms %}
                 {% if forloop.first %}
@@ -29,6 +29,30 @@
                 </tr>
             {% endfor %}
         </table>
+        <input type="button" class="button" value="Add song" id="add-song">
         <input type="submit" class="button" value="Save songs">
     </form>
+<div id="empty-form" style="display: none">
+    {{ songs.empty_form }}
 </div>
+</div>
+<script>
+    const addSong = document.querySelector('#add-song')
+    const totalForms = document.querySelector('#id_song_set-TOTAL_FORMS')
+    const emptyForm = document.querySelector('#empty-form')
+    const table = document.querySelector('#songs-table')
+
+    const toRow = (inputs, index) => {
+        inputs = Array.from(inputs)
+        console.log(inputs)
+        const columns = inputs.map(input => input.type === 'hidden' ? input.outerHTML : `<td>${input.outerHTML}</td>`).join('')
+        return `<tr class="formset_row">${columns}</tr>`.replace(/__prefix__/g, index)
+    }
+
+    addSong.addEventListener('click', () => {
+        const form_idx = totalForms.value
+        const inputs = emptyForm.querySelectorAll('input')
+        table.innerHTML += toRow(inputs, form_idx)
+        totalForms.value = parseInt(totalForms.value) + 1
+    })
+</script>

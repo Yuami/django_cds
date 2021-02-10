@@ -22,7 +22,7 @@ class CdForm(forms.ModelForm):
 class SongForm(forms.ModelForm):
     class Meta:
         model = Song
-        fields = ('title', 'duration', 'cd')
+        fields = ('title', 'duration', 'order', 'cd')
         widgets = {
             'cd': forms.HiddenInput()
         }
@@ -34,4 +34,4 @@ class BandUpdateForm(forms.ModelForm):
         fields = ('name', 'active')
 
 
-SongInlineFormset = inlineformset_factory(Cd, Song, form=SongForm, extra=1,  can_order=True, can_delete=True)
+SongInlineFormset = inlineformset_factory(Cd, Song, form=SongForm, extra=1, can_delete=True)
