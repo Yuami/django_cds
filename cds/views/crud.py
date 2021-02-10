@@ -26,7 +26,7 @@ class DetailView(BaseView, generic.DetailView):
 
 
 class CreateView(generic.CreateView, BaseView):
-    template_name = 'cds/base_create.html'
+    template_name = 'cds/base_create_update.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -34,7 +34,7 @@ class CreateView(generic.CreateView, BaseView):
 
 
 class UpdateView(BaseView, generic.UpdateView):
-    template_name = 'cds/base_update.html'
+    template_name = 'cds/base_create_update.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

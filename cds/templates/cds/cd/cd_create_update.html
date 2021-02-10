@@ -1,9 +1,9 @@
-{% extends "cds/base_create.html" %}
+{% extends "cds/base_create_update.html" %}
 {% block scripts %}
     <script>
-        const submit = document.querySelector('#create-submit')
+        const submit = document.querySelector('#create-update-submit')
+        const form = document.querySelector('#create-update-form')
         const band = document.querySelector('#band-select')
-        const form = document.querySelector('#create-form')
 
         submit.addEventListener('click', (e) => {
             e.preventDefault()

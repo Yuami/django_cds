@@ -28,7 +28,7 @@ class BandIndexView(SingleTableView):
 class BandCreateView(CreateView):
     model = Band
     fields = ['name']
-    title = 'Band'
+    title = 'Creating Band'
     backlink = reverse_lazy('cds:band-list')
 
     def get_success_url(self, *args):
@@ -45,7 +45,7 @@ class BandDetailView(DetailView):
 class BandUpdateView(UpdateView):
     model = Band
     form_class = BandUpdateForm
-    title = 'Band'
+    title = 'Updating Band'
     backlink = reverse_lazy('cds:band-list')
 
     def get_success_url(self, *args):
@@ -54,7 +54,7 @@ class BandUpdateView(UpdateView):
 
 class BandDeleteView(DeleteView):
     model = Band
-    title = 'Band'
+    title = 'Deleting Band'
     success_url = reverse_lazy('cds:band-list')
     backlink = reverse_lazy('cds:band-list')
 
@@ -64,9 +64,9 @@ class BandDeleteView(DeleteView):
 
 class CdCreateView(CreateView):
     model = Cd
-    title = 'CD'
+    title = 'Creating CD'
     form_class = CdForm
-    template_name = 'cds/cd/cd_create.html'
+    template_name = 'cds/cd/cd_create_update.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
@@ -82,10 +82,31 @@ class CdCreateView(CreateView):
         return reverse('cds:cd-detail', kwargs={'pk': self.object.pk})
 
 
-class CdDetailView(DetailView):
+class CdDetailView(UpdateView):
     template_name = 'cds/cd/cd_detail.html'
     model = Cd
     title = 'CD'
+    fields = []
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.POST:
+            context['songs'] = SongInlineFormset(self.request.POST)
+        else:
+            context['songs'] = SongInlineFormset(instance=self.get_object())
+        return context
+
+    def form_valid(self, form):
+        context = self.get_context_data()
+        songs = context['songs']
+        with transaction.atomic():
+            self.object = form.save()
+
+            if songs.is_valid():
+                songs.instance = self.object
+                songs.save()
+
+        return super().form_valid(form)
 
     def get_backlink(self):
         return reverse('cds:band-detail', kwargs={'pk': self.object.band.pk})
@@ -94,7 +115,8 @@ class CdDetailView(DetailView):
 class CdUpdateView(UpdateView):
     model = Cd
     form_class = CdForm
-    title = 'CD'
+    title = 'Updating CD'
+    template_name = 'cds/cd/cd_create_update.html'
 
     def get_backlink(self):
         return reverse('cds:band-detail', kwargs={'pk': self.object.band.pk})
@@ -105,7 +127,7 @@ class CdUpdateView(UpdateView):
 
 class CdDeleteView(DeleteView):
     model = Cd
-    title = 'CD'
+    title = 'Deleting CD'
 
     def get_backlink(self):
         return reverse('cds:band-detail', kwargs={'pk': self.object.band.pk})
@@ -120,7 +142,7 @@ class CdDeleteView(DeleteView):
 class SongCreateView(CreateView):
     model = Song
     form_class = SongForm
-    title = 'Song'
+    title = 'Creating Song'
 
     def get_backlink(self):
         return reverse('cds:cd-detail', kwargs={'pk': self.request.GET['pk']})
@@ -146,7 +168,7 @@ class SongDetailView(DetailView):
 class SongUpdateView(UpdateView):
     model = Song
     form_class = SongForm
-    title = 'Song'
+    title = 'Updating Song'
 
     def get_backlink(self):
         return reverse('cds:cd-detail', kwargs={'pk': self.object.cd.pk})
@@ -157,7 +179,7 @@ class SongUpdateView(UpdateView):
 
 class SongDeleteView(DeleteView):
     model = Song
-    title = 'Song'
+    title = 'Deleting Song'
 
     def get_backlink(self):
         return reverse('cds:cd-detail', kwargs={'pk': self.object.cd.pk})
@@ -173,16 +195,3 @@ class SongDeleteView(DeleteView):
         response = super().delete(request, *args, **kwargs)
         cd.remove_song()
         return response
-
-
-class CdSongInlineView(UpdateView):
-    model = Cd
-    title = 'CD songs'
-    template_name = 'cds/cd/cd_song_inline.html'
-    form_class = SongInlineFormset
-
-    def get_backlink(self):
-        return reverse('cds:cd-detail', kwargs={'pk': self.object.pk})
-
-    def get_success_url(self):
-        return self.request.path_info
