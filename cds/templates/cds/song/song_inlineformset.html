@@ -32,9 +32,9 @@
         <input type="button" class="button" value="Add song" id="add-song">
         <input type="submit" class="button" value="Save songs">
     </form>
-<div id="empty-form" style="display: none">
-    {{ songs.empty_form }}
-</div>
+    <div id="empty-form" style="display: none">
+        {{ songs.empty_form }}
+    </div>
 </div>
 <script>
     const addSong = document.querySelector('#add-song')
@@ -42,17 +42,17 @@
     const emptyForm = document.querySelector('#empty-form')
     const table = document.querySelector('#songs-table')
 
-    const toRow = (inputs, index) => {
-        inputs = Array.from(inputs)
-        console.log(inputs)
-        const columns = inputs.map(input => input.type === 'hidden' ? input.outerHTML : `<td>${input.outerHTML}</td>`).join('')
-        return `<tr class="formset_row">${columns}</tr>`.replace(/__prefix__/g, index)
+    const addRow = (inputs, index, table) => {
+        const row = table.insertRow()
+        const hiddenInputs = []
+        Array.from(inputs).forEach(input => input.type === 'hidden' ? hiddenInputs.push(input.outerHTML) : row.insertCell().innerHTML = input.outerHTML)
+        return row.innerHTML = row.innerHTML.replace(/__prefix__/g, index) + hiddenInputs.join('')
     }
 
     addSong.addEventListener('click', () => {
         const form_idx = totalForms.value
         const inputs = emptyForm.querySelectorAll('input')
-        table.innerHTML += toRow(inputs, form_idx)
+        addRow(inputs, form_idx, table)
         totalForms.value = parseInt(totalForms.value) + 1
     })
 </script>
