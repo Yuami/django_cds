@@ -108,6 +108,7 @@ class CdDetailView(UpdateView):
             if songs.is_valid():
                 songs.instance = self.object
                 songs.save()
+                self.object.update_total_songs()
 
         return super().form_valid(form)
 

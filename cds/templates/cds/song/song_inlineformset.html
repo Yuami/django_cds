@@ -1,6 +1,7 @@
 {% load static %}
 <script src="{% static 'js/jquery.js' %}"></script>
 <script src="{% static 'js/jquery.formset.js' %}"></script>
+{% load formset_tags %}
 
 <div class="mt-3">
     <h1 class="title">Songs</h1>
@@ -9,7 +10,7 @@
         <div id="formset" data-formset-prefix="{{ songs.prefix }}">
             {{ songs.management_form }}
 
-            <table class="table is-striped is-hoverable is-fullwidth" id="songs-table" data-formset-body>
+            <table class="table is-striped is-hoverable is-fullwidth" data-formset-body>
                 {% for form in songs.forms %}
                     {% if forloop.first %}
                         <thead>
@@ -20,7 +21,7 @@
                         </tr>
                         </thead>
                     {% endif %}
-                    <tr class="formset_row">
+                    <tr class="formset_row" data-formset-form>
                         {% for field in form.visible_fields %}
                             <td>
                                 {% if forloop.first %}

@@ -16,6 +16,9 @@ class Cd(models.Model):
     pub_date = models.DateTimeField(verbose_name='Publication date')
     total_songs = models.IntegerField(verbose_name='Total songs', default=0)
 
+    def update_total_songs(self):
+        self.total_songs = self.song_set.count()
+
     def add_song(self):
         self.total_songs += 1
         self.save()
