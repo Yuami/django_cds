@@ -51,7 +51,7 @@
                                 {% endfor %}
                             {% endif %}
                             {% if forloop.last %}
-                                <div class="hidden">{{ form.DELETE }}</div>
+                                <div style="display: none">{{ songs.empty_form.DELETE }}</div>
                                 <button type="button" data-formset-delete-button class="button">Delete</button>
                             {% else %}
                                 {{ field.errors.as_ul }}
