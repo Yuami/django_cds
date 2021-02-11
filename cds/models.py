@@ -10,6 +10,17 @@ class Band(models.Model):
         return self.name
 
 
+class Artist(models.Model):
+    name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    birth_date = models.DateField()
+    death_date = models.DateField(blank=True, null=True)
+    bands = models.ManyToManyField(Band)
+
+    def __str__(self):
+        return f'{self.name} {self.last_name}'
+
+
 class Cd(models.Model):
     band = models.ForeignKey(Band, on_delete=models.CASCADE, verbose_name='Band')
     title = models.CharField(max_length=50)
