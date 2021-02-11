@@ -1,5 +1,6 @@
 from django import forms
 from django.forms import inlineformset_factory
+from djangoformsetjs.utils import formset_media_js
 
 from cds.models import Band, Cd, Song
 
@@ -27,6 +28,9 @@ class SongForm(forms.ModelForm):
             'cd': forms.HiddenInput()
         }
 
+        class Media(object):
+            js = formset_media_js + ()
+
 
 class BandUpdateForm(forms.ModelForm):
     class Meta:
@@ -34,4 +38,4 @@ class BandUpdateForm(forms.ModelForm):
         fields = ('name', 'active')
 
 
-SongInlineFormset = inlineformset_factory(Cd, Song, form=SongForm, extra=1, can_delete=True)
+SongInlineFormset = inlineformset_factory(Cd, Song, form=SongForm, extra=1)

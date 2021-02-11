@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'cds.apps.CdsConfig',
     'django_tables2',
+    'jquery',
+    'djangoformsetjs'
 ]
 
 MIDDLEWARE = [

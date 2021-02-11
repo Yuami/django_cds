@@ -1,58 +1,77 @@
+{% load static %}
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/jquery.formset.js' %}"></script>
+
 <div class="mt-3">
     <h1 class="title">Songs</h1>
     <form method="post">
         {% csrf_token %}
-        <table class="table is-striped is-hoverable is-fullwidth" id="songs-table">
+        <div id="formset" data-formset-prefix="{{ songs.prefix }}">
             {{ songs.management_form }}
-            {% for form in songs.forms %}
-                {% if forloop.first %}
-                    <thead>
-                    <tr>
+
+            <table class="table is-striped is-hoverable is-fullwidth" id="songs-table" data-formset-body>
+                {% for form in songs.forms %}
+                    {% if forloop.first %}
+                        <thead>
+                        <tr>
+                            {% for field in form.visible_fields %}
+                                <th>{{ field.label|capfirst }}</th>
+                            {% endfor %}
+                        </tr>
+                        </thead>
+                    {% endif %}
+                    <tr class="formset_row">
                         {% for field in form.visible_fields %}
-                            <th>{{ field.label|capfirst }}</th>
+                            <td>
+                                {% if forloop.first %}
+                                    {% for hidden in form.hidden_fields %}
+                                        {{ hidden }}
+                                    {% endfor %}
+                                {% endif %}
+                                {% if forloop.last %}
+                                    <div style="display: none">{{ form.DELETE }}</div>
+                                    <button type="button" data-formset-delete-button class="button">Delete</button>
+                                {% else %}
+                                    {{ field.errors.as_ul }}
+                                    {{ field }}
+                                {% endif %}
+                            </td>
                         {% endfor %}
                     </tr>
-                    </thead>
-                {% endif %}
-                <tr class="formset_row">
-                    {% for field in form.visible_fields %}
+                {% endfor %}
+            </table>
+
+            <script type="form-template" data-formset-empty-form>
+                <tr class="formset_row" data-formset-form>
+                    {% for field in songs.empty_form.visible_fields %}
                         <td>
                             {% if forloop.first %}
-                                {% for hidden in form.hidden_fields %}
+                                {% for hidden in songs.empty_form.hidden_fields %}
                                     {{ hidden }}
                                 {% endfor %}
                             {% endif %}
-                            {{ field.errors.as_ul }}
-                            {{ field }}
+                            {% if forloop.last %}
+                                <div class="hidden">{{ form.DELETE }}</div>
+                                <button type="button" data-formset-delete-button class="button">Delete</button>
+                            {% else %}
+                                {{ field.errors.as_ul }}
+                                {{ field }}
+                            {% endif %}
                         </td>
                     {% endfor %}
                 </tr>
-            {% endfor %}
-        </table>
-        <input type="button" class="button" value="Add song" id="add-song">
-        <input type="submit" class="button" value="Save songs">
+            </script>
+
+            <input type="button" class="button" value="Add song" data-formset-add>
+            <input type="submit" class="button" value="Save songs">
+
+            <script>
+                jQuery(function ($) {
+                    $("#formset").formset({
+                        animateForms: true
+                    });
+                });
+            </script>
+        </div>
     </form>
-    <div id="empty-form" style="display: none">
-        {{ songs.empty_form }}
-    </div>
 </div>
-<script>
-    const addSong = document.querySelector('#add-song')
-    const totalForms = document.querySelector('#id_song_set-TOTAL_FORMS')
-    const emptyForm = document.querySelector('#empty-form')
-    const table = document.querySelector('#songs-table')
-
-    const addRow = (inputs, index, table) => {
-        const row = table.insertRow()
-        const hiddenInputs = []
-        Array.from(inputs).forEach(input => input.type === 'hidden' ? hiddenInputs.push(input.outerHTML) : row.insertCell().innerHTML = input.outerHTML)
-        return row.innerHTML = row.innerHTML.replace(/__prefix__/g, index) + hiddenInputs.join('')
-    }
-
-    addSong.addEventListener('click', () => {
-        const form_idx = totalForms.value
-        const inputs = emptyForm.querySelectorAll('input')
-        addRow(inputs, form_idx, table)
-        totalForms.value = parseInt(totalForms.value) + 1
-    })
-</script>
