@@ -27,6 +27,39 @@
             </td>
         </tr>
     </table>
+    <div class="mt-3">
+        <h1 class="title">Artists</h1>
+    <table class="table is-striped is-hoverable is-fullwidth">
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Last name</th>
+                <th>Birth date</th>
+                <th>Death date</th>
+                <th>View</th>
+            </tr>
+            {% for artist in band.artist_set.all %}
+                <tr>
+                    <td>{{ artist.id }}</td>
+                    <td>{{ artist.name }}</td>
+                    <td>{{ artist.last_name }}</td>
+                    <td>{{ artist.birth_date }}</td>
+                    <td>{{ artist.death_date }}</td>
+                    <td class="is-flex">
+                        <a href="{% url 'cds:artist-detail' artist.pk %}" class="has-text-black mx-2">
+                            <svg style="height: 20px" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                 stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                            </svg>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
 
     <div class="mt-3">
         <h1 class="title">CDs</h1>

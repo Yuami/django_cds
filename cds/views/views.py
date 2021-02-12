@@ -4,7 +4,7 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView
 from django_tables2 import SingleTableView
 
-from cds.forms import BandUpdateForm, CdForm, SongForm, SongInlineFormset, ArtistForm
+from cds.forms import BandForm, CdForm, SongForm, SongInlineFormset, ArtistForm
 from cds.models import Band, Cd, Song, Artist
 from cds.tables import BandTable, ArtistTable
 from cds.views.crud import CreateView, UpdateView, DeleteView, DetailView, BaseView
@@ -31,7 +31,7 @@ class BandIndexView(SingleTableView, BaseView):
 
 class BandCreateView(CreateView):
     model = Band
-    fields = ['name']
+    form_class = BandForm
     title = 'Creating Band'
     backlink = reverse_lazy('cds:band-list')
 
@@ -48,7 +48,7 @@ class BandDetailView(DetailView):
 
 class BandUpdateView(UpdateView):
     model = Band
-    form_class = BandUpdateForm
+    form_class = BandForm
     title = 'Updating Band'
     backlink = reverse_lazy('cds:band-list')
 

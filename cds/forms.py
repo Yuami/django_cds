@@ -32,10 +32,24 @@ class SongForm(forms.ModelForm):
             js = formset_media_js + ()
 
 
-class BandUpdateForm(forms.ModelForm):
+class BandForm(forms.ModelForm):
+    artists = forms.ModelMultipleChoiceField(queryset=Artist.objects.all())
+
     class Meta:
         model = Band
         fields = ('name', 'active')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if kwargs.get('instance'):
+            initial = kwargs.get('initial')
+            initial['artists'] = [artist.pk for artist in kwargs['instance'].artist_set.all()]
+
+    def save(self, commit=True):
+        instance = forms.ModelForm.save(self)
+        instance.artist_set.clear()
+        instance.artist_set.add(*self.cleaned_data['artists'])
+        return instance
 
 
 SongInlineFormset = inlineformset_factory(Cd, Song, form=SongForm, extra=1)

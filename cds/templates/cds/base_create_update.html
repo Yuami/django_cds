@@ -1,12 +1,14 @@
 {% extends "cds/base.html" %}
 {% block content %}
-        <h1 class="title">{{ title }}</h1>
-        {% block form_title %}{% endblock %}
-        <form method="post" id="create-update-form">
-            {% csrf_token %}
-            <table class="table">
-                {{ form.as_table }}
-            </table>
+    <h1 class="title">{{ title }}</h1>
+    {% block form_title %}{% endblock %}
+    <form method="post" id="create-update-form">
+        {% csrf_token %}
+        <table class="table">
+            {{ form.as_table }}
+        </table>
+        {% block submit %}
             <input class="button has-background-primary" id="create-update-submit" type="submit" value="Create">
-        </form>
+        {% endblock %}
+    </form>
 {% endblock %}
