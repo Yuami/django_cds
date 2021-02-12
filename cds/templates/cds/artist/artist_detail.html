@@ -1,0 +1,34 @@
+{% extends "cds/base.html" %}
+
+{% block content %}
+    <h1 class="title">{{ title }}: {{ artist }}</h1>
+    <table class="table">
+        <tr>
+            <th>Id</th>
+            <td>{{ band.id }}</td>
+        </tr>
+        <tr>
+            <th>Name</th>
+            <td>{{ artist.name }}</td>
+        </tr>
+        <tr>
+            <th>Last name</th>
+            <td>{{ artist.last_name }}</td>
+        </tr>
+        <tr>
+            <th>Birth date</th>
+            <td>{{ artist.birth_date }}</td>
+        </tr>
+        <tr>
+            <th>Death date</th>
+            <td>{{ artist.death_date }}</td>
+        </tr>
+        <tr>
+            <th>Actions</th>
+            <td>
+                <a class="button" href="{% url 'cds:artist-update' artist.pk %}">Update</a>
+                <a class="button has-background-danger" href="{% url 'cds:artist-delete' artist.pk %}">Delete</a>
+            </td>
+        </tr>
+    </table>
+{% endblock %}

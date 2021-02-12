@@ -1,6 +1,6 @@
 import django_tables2 as tables
 
-from cds.models import Band
+from cds.models import Band, Artist
 
 
 class BandTable(tables.Table):
@@ -10,4 +10,12 @@ class BandTable(tables.Table):
 
     class Meta:
         model = Band
+        attrs = {'class': 'table'}
+
+
+class ArtistTable(tables.Table):
+    actions = tables.TemplateColumn(template_name='cds/actions.html')
+
+    class Meta:
+        model = Artist
         attrs = {'class': 'table'}

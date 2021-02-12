@@ -1,0 +1,9 @@
+{% extends 'cds/base.html' %}
+{% block header %}{% endblock %}
+{% block content %}
+    <h1 class="title">Resources</h1>
+    <ul>
+        <li><a href="{% url 'cds:band-list' %}">Bands</a></li>
+        <li><a href="{% url 'cds:artist-list' %}">Artists</a></li>
+    </ul>
+{% endblock %}

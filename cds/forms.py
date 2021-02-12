@@ -2,7 +2,7 @@ from django import forms
 from django.forms import inlineformset_factory
 from djangoformsetjs.utils import formset_media_js
 
-from cds.models import Band, Cd, Song
+from cds.models import Band, Cd, Song, Artist
 
 
 class CdForm(forms.ModelForm):
@@ -39,3 +39,13 @@ class BandUpdateForm(forms.ModelForm):
 
 
 SongInlineFormset = inlineformset_factory(Cd, Song, form=SongForm, extra=1)
+
+
+class ArtistForm(forms.ModelForm):
+    class Meta:
+        model = Artist
+        fields = ('name', 'last_name', 'birth_date', 'death_date')
+        widgets = {
+            'birth_date': forms.DateInput(attrs={'type': 'date'}),
+            'death_date': forms.DateInput(attrs={'type': 'date'}),
+        }

@@ -1,24 +1,28 @@
 from django.db import transaction
 from django.db.models import Sum
 from django.urls import reverse, reverse_lazy
+from django.views.generic import TemplateView
 from django_tables2 import SingleTableView
 
-from cds.forms import BandUpdateForm, CdForm, SongForm, SongInlineFormset
-from cds.models import Band, Cd, Song
-from cds.tables import BandTable
-from cds.views.crud import CreateView, UpdateView, DeleteView, DetailView
+from cds.forms import BandUpdateForm, CdForm, SongForm, SongInlineFormset, ArtistForm
+from cds.models import Band, Cd, Song, Artist
+from cds.tables import BandTable, ArtistTable
+from cds.views.crud import CreateView, UpdateView, DeleteView, DetailView, BaseView
 
 
-class BandIndexView(SingleTableView):
+class BandIndexView(SingleTableView, BaseView):
     model = Band
     table_class = BandTable
     template_name = 'cds/band/band_list.html'
+    title = 'Bands'
+    backlink = reverse_lazy('cds:index-view')
 
     def get_queryset(self):
         return Band.objects.all().annotate(total_songs=Sum('cd__total_songs'))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context = self.attach_to_context(context, self.request)
         context['detail'] = 'band-detail'
         context['update'] = 'band-update'
         context['delete'] = 'band-delete'
@@ -199,3 +203,59 @@ class SongDeleteView(DeleteView):
         response = super().delete(request, *args, **kwargs)
         cd.remove_song()
         return response
+
+
+class IndexView(TemplateView):
+    template_name = 'cds/index.html'
+
+
+class ArtistListView(SingleTableView, BaseView):
+    model = Artist
+    table_class = ArtistTable
+    template_name = 'cds/artist/artist_list.html'
+    backlink = reverse_lazy('cds:index-view')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = self.attach_to_context(context, self.request)
+        context['detail'] = 'artist-detail'
+        context['update'] = 'artist-update'
+        context['delete'] = 'artist-delete'
+        return context
+
+
+class ArtistCreateView(CreateView):
+    model = Artist
+    form_class = ArtistForm
+    title = 'Creating Artist'
+    backlink = reverse_lazy('cds:artist-list')
+
+    def get_success_url(self, *args):
+        return reverse('cds:artist-detail', kwargs={'pk': self.object.pk})
+
+
+class ArtistDetailView(DetailView):
+    template_name = 'cds/artist/artist_detail.html'
+    model = Artist
+    title = 'Artist'
+    backlink = reverse_lazy('cds:artist-list')
+
+
+class ArtistUpdateView(UpdateView):
+    model = Artist
+    form_class = ArtistForm
+    title = 'Updating Artist'
+    backlink = reverse_lazy('cds:artist-list')
+
+    def get_success_url(self, *args):
+        return reverse('cds:artist-detail', args=[self.get_object().pk])
+
+
+class ArtistDeleteView(DeleteView):
+    model = Artist
+    title = 'Deleting Artist'
+    success_url = reverse_lazy('cds:artist-list')
+    backlink = reverse_lazy('cds:artist-list')
+
+    def get_object_name(self):
+        return self.get_object().name

@@ -1,0 +1,8 @@
+{% extends "cds/base.html" %}
+{% load django_tables2 %}
+
+{% block content %}
+    <h1 class="title mb-3">Artists</h1>
+    {% render_table table %}
+    <a class="button has-background-primary" href="{% url 'cds:artist-create' %}">Create artist</a>
+{% endblock %}
