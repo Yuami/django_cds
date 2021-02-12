@@ -44,7 +44,7 @@ SongInlineFormset = inlineformset_factory(Cd, Song, form=SongForm, extra=1)
 class ArtistForm(forms.ModelForm):
     class Meta:
         model = Artist
-        fields = ('name', 'last_name', 'birth_date', 'death_date')
+        fields = ('name', 'last_name', 'birth_date', 'death_date', 'bands')
         widgets = {
             'birth_date': forms.DateInput(attrs={'type': 'date'}),
             'death_date': forms.DateInput(attrs={'type': 'date'}),

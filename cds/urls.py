@@ -23,8 +23,6 @@ urlpatterns = [
     path('cd/<int:pk>/update', views.CdUpdateView.as_view(), name='cd-update'),
     path('cd/<int:pk>/delete', views.CdDeleteView.as_view(), name='cd-delete'),
 
-    # path('artist/')
-
     path('song/create', views.SongCreateView.as_view(), name='song-create'),
     path('song/<int:pk>', views.SongDetailView.as_view(), name='song-detail'),
     path('song/<int:pk>/update', views.SongUpdateView.as_view(), name='song-update'),
