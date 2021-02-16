@@ -7,6 +7,20 @@
     <form method="GET" action="" id="searchform">
         {{ form.as_table }}
     </form>
+    <table class="table ">
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Duration</th>
+            <th>Order</th>
+        </tr>
+        <tr id="song-data">
+            <td class="song-id">-</td>
+            <td class="song-title"></td>
+            <td class="song-duration"></td>
+            <td class="song-order"></td>
+        </tr>
+    </table>
 {% endblock %}
 
 {% block scripts %}
@@ -14,4 +28,25 @@
             integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
             crossorigin="anonymous"></script>
     {{ form.media.js }}
+
+    <script>
+        const select = $('#mySelect2').djangoSelect2();
+        const tableRow = document.querySelector('#song-data');
+
+        select.change(async () => {
+            const selected = select.select2('data')
+            const response = await fetch(`/song/${selected[0].id}/json`)
+            const data = await response.json()
+            const {fields, pk} = data[0]
+            fields.id = pk
+
+            Object.keys(fields).forEach((field) => {
+                    const column = tableRow.querySelector(`.song-${field}`)
+                    if (column) {
+                        column.innerText = fields[field]
+                    }
+                }
+            )
+        })
+    </script>
 {% endblock %}

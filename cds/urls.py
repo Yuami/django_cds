@@ -28,6 +28,6 @@ urlpatterns = [
     path('song/<int:pk>/update', views.SongUpdateView.as_view(), name='song-update'),
     path('song/<int:pk>/delete', views.SongDeleteView.as_view(), name='song-delete'),
 
-
-    path("song/search/", views.SongSearchView.as_view()),
+    path('song/<int:pk>/json', views.SongSearchJSON.as_view(), name='song-json'),
+    path('song/search/', views.SongSearchView.as_view(), name='song-search'),
 ]

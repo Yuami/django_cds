@@ -79,5 +79,5 @@ class SearchSongsForm(forms.ModelForm):
         model = Song
         fields = ('title',)
         widgets = {
-            'title': ArtistWidget(attrs={"style": "width: 100%"})
+            'title': ArtistWidget(attrs={"style": "width: 100%", "id": "mySelect2"})
         }

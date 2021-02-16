@@ -1,5 +1,7 @@
+from django.core import serializers
 from django.db import transaction
 from django.db.models import Sum
+from django.http import JsonResponse, HttpResponse
 from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, ListView, FormView
 from django_select2.views import AutoResponseView
@@ -267,5 +269,10 @@ class SongSearchView(FormView):
     template_name = 'cds/song/search.html'
 
 
-class SongSearchJSON(AutoResponseView):
+class SongSearchJSON(DetailView):
     model = Song
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        data = serializers.serialize('json', [self.object])
+        return HttpResponse(data, 'application/json')
