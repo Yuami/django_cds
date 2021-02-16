@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 
 from cds.views import views
 
@@ -27,4 +27,7 @@ urlpatterns = [
     path('song/<int:pk>', views.SongDetailView.as_view(), name='song-detail'),
     path('song/<int:pk>/update', views.SongUpdateView.as_view(), name='song-update'),
     path('song/<int:pk>/delete', views.SongDeleteView.as_view(), name='song-delete'),
+
+
+    path("song/search/", views.SongSearchView.as_view()),
 ]

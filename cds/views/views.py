@@ -1,10 +1,11 @@
 from django.db import transaction
 from django.db.models import Sum
 from django.urls import reverse, reverse_lazy
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView, FormView
+from django_select2.views import AutoResponseView
 from django_tables2 import SingleTableView
 
-from cds.forms import BandForm, CdForm, SongForm, SongInlineFormset, ArtistForm
+from cds.forms import BandForm, CdForm, SongForm, SongInlineFormset, ArtistForm, SearchSongsForm
 from cds.models import Band, Cd, Song, Artist
 from cds.tables import BandTable, ArtistTable
 from cds.views.crud import CreateView, UpdateView, DeleteView, DetailView, BaseView
@@ -259,3 +260,12 @@ class ArtistDeleteView(DeleteView):
 
     def get_object_name(self):
         return self.get_object().name
+
+
+class SongSearchView(FormView):
+    form_class = SearchSongsForm
+    template_name = 'cds/song/search.html'
+
+
+class SongSearchJSON(AutoResponseView):
+    model = Song

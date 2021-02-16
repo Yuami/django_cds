@@ -10,7 +10,7 @@ class BaseView:
 
     def attach_backlink(self, request):
         self.backlink = self.get_backlink()
-        return self.backlink if self.backlink else request.META.get('HTTP_REFERER')
+        return self.backlink if self.backlink else request.META.get()
 
     def attach_to_context(self, context, request):
         context['title'] = self.title

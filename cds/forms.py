@@ -3,6 +3,7 @@ from django.forms import inlineformset_factory
 from djangoformsetjs.utils import formset_media_js
 
 from cds.models import Band, Cd, Song, Artist
+from django_select2 import forms as s2forms
 
 
 class CdForm(forms.ModelForm):
@@ -62,4 +63,21 @@ class ArtistForm(forms.ModelForm):
         widgets = {
             'birth_date': forms.DateInput(attrs={'type': 'date'}),
             'death_date': forms.DateInput(attrs={'type': 'date'}),
+        }
+
+
+class ArtistWidget(s2forms.ModelSelect2Widget):
+    model = Song
+    search_fields = [
+        "title__icontains"
+    ]
+
+
+class SearchSongsForm(forms.ModelForm):
+    # song = forms.ModelChoiceField(queryset=Song.objects.all(), widget=ArtistWidget)
+    class Meta:
+        model = Song
+        fields = ('title',)
+        widgets = {
+            'title': ArtistWidget(attrs={"style": "width: 100%"})
         }
