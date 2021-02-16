@@ -42,9 +42,7 @@
 
             Object.keys(fields).forEach((field) => {
                     const column = tableRow.querySelector(`.song-${field}`)
-                    if (column) {
-                        column.innerText = fields[field]
-                    }
+                    if (column) column.innerText = fields[field]
                 }
             )
         })
