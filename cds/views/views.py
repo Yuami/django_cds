@@ -274,5 +274,5 @@ class SongSearchJSON(DetailView):
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        data = serializers.serialize('json', [self.object])
+        data = serializers.serialize('json', [self.object, self.object.cd, self.object.cd.band])
         return HttpResponse(data, 'application/json')

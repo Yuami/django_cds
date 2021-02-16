@@ -13,12 +13,16 @@
             <th>Title</th>
             <th>Duration</th>
             <th>Order</th>
+            <th>CD</th>
+            <th>Band</th>
         </tr>
         <tr id="song-data">
             <td class="song-id">-</td>
             <td class="song-title"></td>
             <td class="song-duration"></td>
             <td class="song-order"></td>
+            <td class="cd-title"></td>
+            <td class="band-name"></td>
         </tr>
     </table>
 {% endblock %}
@@ -36,14 +40,18 @@
         select.change(async () => {
             const selected = select.select2('data')
             const response = await fetch(`/song/${selected[0].id}/json`)
-            const {fields, pk} = (await response.json())[0]
-            fields.id = pk
+            const data = await response.json()
+            data.forEach(model => {
+                let {fields, pk, model: modelName} = model
+                modelName = modelName.replace('cds.', '')
+                fields.id = pk
 
-            Object.keys(fields).forEach((field) => {
-                    const column = tableRow.querySelector(`.song-${field}`)
-                    if (column) column.innerText = fields[field]
-                }
-            )
+                Object.keys(fields).forEach((field) => {
+                        const column = tableRow.querySelector(`.${modelName}` + `-${field}`)
+                        if (column) column.innerText = fields[field]
+                    }
+                )
+            })
         })
     </script>
 {% endblock %}
