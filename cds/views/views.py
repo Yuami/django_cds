@@ -98,12 +98,15 @@ class CdDetailView(UpdateView):
     def get_success_url(self):
         return self.request.path_info
 
+    def get_formset(self):
+        if self.request.POST:
+            return SongInlineFormset(self.request.POST, instance=self.get_object())
+
+        return SongInlineFormset(instance=self.get_object())
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        if self.request.POST:
-            context['songs'] = SongInlineFormset(self.request.POST, instance=self.get_object())
-        else:
-            context['songs'] = SongInlineFormset(instance=self.get_object())
+        context['songs'] = self.get_formset()
         return context
 
     def form_valid(self, form):
