@@ -36,8 +36,7 @@
         select.change(async () => {
             const selected = select.select2('data')
             const response = await fetch(`/song/${selected[0].id}/json`)
-            const data = await response.json()
-            const {fields, pk} = data[0]
+            const {fields, pk} = (await response.json())[0]
             fields.id = pk
 
             Object.keys(fields).forEach((field) => {
