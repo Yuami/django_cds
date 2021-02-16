@@ -33,8 +33,16 @@ class SongForm(forms.ModelForm):
             js = formset_media_js + ()
 
 
+class ArtistWidget(s2forms.ModelSelect2MultipleWidget):
+    model = Artist
+    search_fields = [
+        "name__icontains",
+        "last_name__icontains"
+    ]
+
+
 class BandForm(forms.ModelForm):
-    artists = forms.ModelMultipleChoiceField(queryset=Artist.objects.all())
+    artists = forms.ModelMultipleChoiceField(queryset=Artist.objects.all(), widget=ArtistWidget(attrs={'style': 'width: 100%'}))
 
     class Meta:
         model = Band
@@ -56,17 +64,25 @@ class BandForm(forms.ModelForm):
 SongInlineFormset = inlineformset_factory(Cd, Song, form=SongForm, extra=1)
 
 
+class BandWidget(s2forms.ModelSelect2MultipleWidget):
+    model = Band
+    search_fields = [
+        "name__icontains"
+    ]
+
+
 class ArtistForm(forms.ModelForm):
     class Meta:
         model = Artist
         fields = ('name', 'last_name', 'birth_date', 'death_date', 'bands')
         widgets = {
+            'bands': BandWidget(attrs={"style": "width: 100%"}),
             'birth_date': forms.DateInput(attrs={'type': 'date'}),
             'death_date': forms.DateInput(attrs={'type': 'date'}),
         }
 
 
-class ArtistWidget(s2forms.ModelSelect2Widget):
+class SongWidget(s2forms.ModelSelect2Widget):
     model = Song
     search_fields = [
         "title__icontains"
@@ -74,10 +90,9 @@ class ArtistWidget(s2forms.ModelSelect2Widget):
 
 
 class SearchSongsForm(forms.ModelForm):
-    # song = forms.ModelChoiceField(queryset=Song.objects.all(), widget=ArtistWidget)
     class Meta:
         model = Song
         fields = ('title',)
         widgets = {
-            'title': ArtistWidget(attrs={"style": "width: 100%", "id": "mySelect2"})
+            'title': SongWidget(attrs={"style": "width: 100%", "id": "mySelect2"})
         }
